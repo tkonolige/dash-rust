@@ -11,32 +11,38 @@ class DocsetIndex
     "static" => "Constant",
     "struct" => "_Struct",
     "structfield" => "Field",
+    "enum" => "Enum",
     "trait" => "Trait",
     "tymethod" => "Method",
     "type" => "Type",
+    "associatedtype" => "Type",
     "variant" => "Variant",
-    "macro" => "Macro"
+    "macro" => "Macro",
+    "constant" => "Constant"
   }
 
-  ITEM_TYPE = [
-    "mod",
-    "struct",
-    "type",
-    "fn",
-    "type",
-    "static",
-    "trait",
-    "impl",
-    "viewitem",
-    "tymethod",
-    "method",
-    "structfield",
-    "variant",
-    "ffi",
-    "ffs",
-    "macro",
-    "primitive"
-  ]
+  # from src/librustdoc/html/static/main.js in rust repo
+  # also located in main.js
+  ITEM_TYPE = ["mod",
+               "externcrate",
+               "import",
+               "struct",
+               "enum",
+               "fn",
+               "type",
+               "static",
+               "trait",
+               "impl",
+               "tymethod",
+               "method",
+               "structfield",
+               "variant",
+               "macro",
+               "primitive",
+               "associatedtype",
+               "constant",
+               "associatedconstant",
+               "union"]
 
   def initialize(dir, guides)
     @dir = dir
@@ -142,6 +148,9 @@ class DocsetIndex
                  [i["path"], parent["name"], i["name"]].compact.join("::")
                end
 
+        if DASH_TYPE[i["ty"]].nil?
+          p i["ty"]
+        end
         add db, name, DASH_TYPE[i["ty"]], path.gsub("::", "/")
       end
     end
